@@ -11,3 +11,9 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// hashing password before saving ti database using bcrypt
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) next();
+});

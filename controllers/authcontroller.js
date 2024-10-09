@@ -30,24 +30,18 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   console.log("Login function called with email:", req.body.email);
-  
+
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  // for testing
-  if (user) {
-    console.log("User found:", user);
-  } else {
-    console.log("User not found with email:", email);
-  }
 
   if (user && (await user.comparePassword(password))) {
     res.json({
       _id: user._id,
       username: user.username,
       email: user.email,
-      token,
+      token: generateToken(user._id),
     });
   } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+    res.status(401).json({ message: "Invalid email or password" });
   }
 };

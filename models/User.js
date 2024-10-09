@@ -15,15 +15,18 @@ const userSchema = new mongoose.Schema(
 // hashing password before saving ti database using bcrypt
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) next();
+  if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // comparing password for logining
 
-userSchema.methods.matchPassword = async function (enteredPassword) {
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  console.log("Stored password:", this.password); // hashed password
+  console.log("Entered password:", enteredPassword);
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema )
+module.exports = mongoose.model("User", userSchema);

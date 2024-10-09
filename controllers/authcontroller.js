@@ -29,5 +29,13 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  const {email, password} = req.body;
-}
+  const { email, password } = req.body;
+
+  const user = User.findOne({ email });
+
+  if (user && (await user.matchedPassword({ password }))) {
+    res.json({
+      _id: user._id,
+    });
+  }
+};

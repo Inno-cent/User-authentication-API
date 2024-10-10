@@ -33,7 +33,10 @@ This is a **Node.js**-based User Authentication API using **Express** and **Mong
 2. Npm install
    ```cmd
    npm install
+   
+3. Set up environment varialbes
 
+4. Npm run dev
 
 
 
